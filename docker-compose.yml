@@ -16,8 +16,8 @@ services:
 
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 5s
-      timeout: 5s
+      interval: 15s
+      timeout: 15s
       retries: 10
 
   cars_service:
@@ -72,6 +72,7 @@ services:
       - cars_service
       - payment_service
       - rental_service
+      - queue_service
     environment:
       CARS_SERVICE_HOST: "cars_service"
       CARS_SERVICE_PORT: "8070"
@@ -79,9 +80,16 @@ services:
       PAYMENT_SERVICE_PORT: "8050"
       RENTAL_SERVICE_HOST: "rental_service"
       RENTAL_SERVICE_PORT: "8060"
-
+      QUEUE_SERVICE_HOST: "queue_service"
+      QUEUE_SERVICE_PORT: "8040"
     ports:
       - "8080:8080"
+
+  queue_service:
+    build: app/queue
+    container_name: queue_service
+    ports:
+      - "8040:8040"
 
 volumes:
   db-data:
