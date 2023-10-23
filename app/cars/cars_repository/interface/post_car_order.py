@@ -1,5 +1,5 @@
 import json
-from quart import Blueprint, Response, request
+from quart import Blueprint, Response
 from cars_repository.models.cars_model import CarsModel
 
 post_car_order_path = Blueprint('post_car_order', __name__, )
