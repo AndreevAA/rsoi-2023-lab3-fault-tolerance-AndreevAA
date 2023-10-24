@@ -2,31 +2,30 @@ import json
 from quart import Blueprint, Response
 from rental_service.models.rental_model import RentalModel
 
+delete_rental_finish_blueprint = Blueprint('delete_rental_finish', __name__, )
 
-delete_current_rental_blueprint = Blueprint('delete_current_rental', __name__,)
 
-
-@delete_current_rental_blueprint.route('/api/v1/rental/<string:rentalUid>', methods=['DELETE'])
-async def delete_current_rental(rentalUid: str) -> Response:
+@delete_rental_finish_blueprint.route('/api/v1/rental/<string:rentalUid>/finish', methods=['DELETE'])
+async def delete_rental_finish(rentalUid: str) -> Response:
     try:
         rental = RentalModel.select().where(
             RentalModel.rental_uid == rentalUid
         ).get()
 
-        if rental.status != 'IN_PROGRESS':
+        if rental.status != 'FINISHED':
             return Response(
                 status=403,
                 content_type='application/json',
                 response=json.dumps({
-                    'errors': ['Rental not in progres.']
+                    'errors': ['Rental not finished.']
                 })
             )
 
-        rental.status = 'CANCELED'
+        rental.status = 'IN_PROGRESS'
         rental.save()
 
         return Response(
-            status=200,
+            status=204,
             content_type='application/json',
             response=json.dumps(rental.to_dict())
         )

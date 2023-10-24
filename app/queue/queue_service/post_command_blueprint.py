@@ -14,7 +14,6 @@ async def post_command() -> Response:
     data = await request.body
     command = json.loads(data)
     response = delete_data_from_service(command['url'], command['headers'], timeout=10)
-    
     while response is None:
         time.sleep(10)
         response = delete_data_from_service(

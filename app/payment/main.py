@@ -14,7 +14,6 @@ app.register_blueprint(health_check_blueprint)
 
 
 def create_tables():
-    PaymentModel.drop_table()
     PaymentModel.create_table()
 
 

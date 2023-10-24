@@ -1,5 +1,6 @@
 import json
-from quart import Blueprint, Response, request
+from quart import Blueprint, Response
+
 from rental_service.models.rental_model import RentalModel
 
 post_rental_finish_blueprint = Blueprint('post_rental_finish', __name__, )
@@ -22,12 +23,13 @@ async def post_rental_finish(rentalUid: str) -> Response:
             )
 
         rental.status = 'FINISHED'
+        resp = json.dumps(rental.to_dict())
         rental.save()
 
         return Response(
-            status=204,
+            status=200,
             content_type='application/json',
-            response=json.dumps(rental.to_dict())
+            response=resp
         )
     except Exception as e:
         return Response(

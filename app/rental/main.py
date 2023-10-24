@@ -1,5 +1,7 @@
 from quart import Quart
 import psycopg2
+
+from rental_service.interface.delete_rentail_finish import delete_rental_finish_blueprint
 from rental_service.models.rental_model import RentalModel
 from rental_service.interface.get_rentals import get_rentals_blueprint
 from rental_service.interface.get_rental import get_rental_blueprint
@@ -14,6 +16,7 @@ app.register_blueprint(get_rentals_blueprint)
 app.register_blueprint(post_rental_blueprint)
 app.register_blueprint(delete_current_rental_blueprint)
 app.register_blueprint(post_rental_finish_blueprint)
+app.register_blueprint(delete_rental_finish_blueprint)
 app.register_blueprint(health_check_blueprint)
 
 
